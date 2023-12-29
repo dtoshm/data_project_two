@@ -35,9 +35,9 @@ def balance_teams(players_copy):
     return teams_assigned
 
 
-def display_teams(teams, user_selected_team):
+def team_calculations(teams, user_selected_team):
     """
-    Display the team stats.
+    Calculate and return various statistics for a selected team.
     """
     players = []
     for player in teams[user_selected_team]:
@@ -53,6 +53,14 @@ def display_teams(teams, user_selected_team):
     sorted_players = sorted(players, key=lambda x: x[1], reverse=True)
     player_names = [player[0] for player in sorted_players]
     guardians = [item[2] for item in players]
+    return total_players, experienced_players, inexperienced_players, average_height, player_names, guardians
+
+
+def display_teams(teams, user_selected_team):
+    """
+    Display the team stats.
+    """
+    total_players, experienced_players, inexperienced_players, average_height, player_names, guardians = team_calculations(teams, user_selected_team)
     print("\nTeam: {} Stats".format(user_selected_team))
     print("-" * 20)
     print("Total Players: {}".format(total_players))
