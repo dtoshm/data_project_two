@@ -18,7 +18,8 @@ def clean_data():
 
 
 def balance_teams():
-    print("balance_teams")
+    teams_copy = {team: [] for team in copy.deepcopy(TEAMS)}
+    return teams_copy
 
 
 def app_start():
@@ -27,6 +28,5 @@ def app_start():
 
 if __name__ == "__main__":
     players_list = clean_data()
-    print(players_list[1])
-    # balance_teams()
+    balance_teams()
     # app_start()
