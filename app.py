@@ -42,7 +42,7 @@ def display_teams(teams, user_selected_team):
     players = []
     guardians = []
     for player in teams[user_selected_team]:
-        first_name = player['name'].split()[0]
+        first_name = player['name']
         players.append(first_name)
         guardians.append(player['guardians'])
 
@@ -57,9 +57,8 @@ def display_teams(teams, user_selected_team):
     print(", ".join(players))
     print("\nGuardians")
     print(', '.join(', '.join(names) for names in guardians))
-    print(f"\n ")
     print("\nPress ENTER to continue...\n")
-
+        
 
 def app_start():
     """
