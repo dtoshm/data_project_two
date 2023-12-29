@@ -35,24 +35,27 @@ def balance_teams(players_copy):
     return teams_assigned
 
 
-def team_calculations(teams, user_selected_team):
+def team_calculations(teams, selected_team):
     """
     Calculate and return various statistics for a selected team.
     """
     players = []
-    for player in teams[user_selected_team]:
+    for player in teams[selected_team]:
         first_name = player['name']
         height = player['height']
         guardians = player['guardians']
         players.append((first_name, height, guardians))
-    experienced_players = len([player for player in teams[user_selected_team] if player['experience']])
-    inexperienced_players = len([player for player in teams[user_selected_team] if not player['experience']])
-    total_players = len(teams[user_selected_team])
+    experienced_players = len([player for player in teams[selected_team] if player['experience']])
+    inexperienced_players = len([player for player in teams[selected_team] if not player['experience']])
+    total_players = len(teams[selected_team])
     player_heights = [player[1] for player in players]    
     average_height = round(sum(player_heights) / len(player_heights), 2)
     sorted_players = sorted(players, key=lambda x: x[1], reverse=True)
     player_names = [player[0] for player in sorted_players]
     guardians = [item[2] for item in players]
+    teams[selected_team].append({'experience_players': experienced_players})
+    teams[selected_team].append({'inexperienced_players': inexperienced_players})
+    teams[selected_team].append({'average_height': average_height})
     return total_players, experienced_players, inexperienced_players, average_height, player_names, guardians
 
 
