@@ -40,9 +40,12 @@ def display_teams(teams, user_selected_team):
     Display the players on each teams first names.
     """
     players = []
+    guardians = []
     for player in teams[user_selected_team]:
         first_name = player['name'].split()[0]
         players.append(first_name)
+        guardians.append(player['guardians'])
+
     print("\nTeam: {} Stats".format(user_selected_team))
     print("-" * 20)
     print("Total Players: {}".format(len(teams[user_selected_team])))
@@ -52,6 +55,9 @@ def display_teams(teams, user_selected_team):
     print("Average Height: {} {}".format(round(sum(height_list) / len(height_list), 2), "inches"))
     print("\nPlayers on Team:")
     print(", ".join(players))
+    print("\nGuardians")
+    print(', '.join(', '.join(names) for names in guardians))
+    print(f"\n ")
     print("\nPress ENTER to continue...\n")
 
 
