@@ -37,32 +37,36 @@ def balance_teams(players_copy):
 
 def display_teams(teams, user_selected_team):
     """
-    Display the players on each teams first names.
+    Display the team stats.
     """
     players = []
-    guardians = []
     for player in teams[user_selected_team]:
         first_name = player['name']
         height = player['height']
-        players.append((first_name, height))
-        guardians.append(player['guardians'])
+        guardians = player['guardians']
+        players.append((first_name, height, guardians))
+    experienced_players = len([player for player in teams[user_selected_team] if player['experience']])
+    inexperienced_players = len([player for player in teams[user_selected_team] if not player['experience']])
+    total_players = len(teams[user_selected_team])
+    player_heights = [player[1] for player in players]    
+    average_height = round(sum(player_heights) / len(player_heights), 2)
+    sorted_players = sorted(players, key=lambda x: x[1], reverse=True)
+    player_names = [player[0] for player in sorted_players]
+    guardians = [item[2] for item in players]
     print("\nTeam: {} Stats".format(user_selected_team))
     print("-" * 20)
-    print("Total Players: {}".format(len(teams[user_selected_team])))
-    print("Experienced Players: {}".format(len([player for player in teams[user_selected_team] if player['experience']])))
-    print("Inexperienced Players: {}".format(len([player for player in teams[user_selected_team] if not player['experience']])))
-    height_list = [player['height'] for player in teams[user_selected_team]]
-    print("Average Height: {} {}".format(round(sum(height_list) / len(height_list), 2), "inches"))
+    print("Total Players: {}".format(total_players))
+    print("Experienced Players: {}".format(experienced_players))
+    print("Inexperienced Players: {}".format(inexperienced_players))
+    print("Average Height: {} {}".format(average_height, "inches"))
     print("\nPlayers on Team:")
-    sorted_players = sorted(players, key=lambda x: x[1], reverse=True)
-    names_only = [player[0] for player in sorted_players]
-    print(', '.join(names_only))
+    print(', '.join(player_names))
     print("\nGuardians")
-    print(', '.join(', '.join(names) for names in guardians))
+    print(', '.join(str(player) for players in guardians for player in players))
     print("\nPress ENTER to continue...\n")
 
 
-def app_start():
+def app_start(teams):
     """
     Mainmenu runs until user selects B.
     Submenu for displaying user selected team assignments until user selects enter.
@@ -79,11 +83,11 @@ def app_start():
             while True:
                 user_selected_team = input("Enter an option: ")
                 if user_selected_team.upper() == "A":
-                    display_teams(team_list, "Panthers")
+                    display_teams(teams, "Panthers")
                 elif user_selected_team.upper() == "B":
-                    display_teams(team_list, "Bandits")
+                    display_teams(teams, "Bandits")
                 elif user_selected_team.upper() == "C":
-                    display_teams(team_list, "Warriors")
+                    display_teams(teams, "Warriors")
                 elif user_selected_team == "":
                     break
                 else:
@@ -95,4 +99,4 @@ def app_start():
 if __name__ == "__main__":
     players_list = clean_data()
     team_list = balance_teams(players_list)
-    app_start()
+    app_start(team_list)
