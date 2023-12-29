@@ -17,9 +17,15 @@ def clean_data():
     return players_cleaned
 
 
-def balance_teams():
+def balance_teams(players_copy):
     teams_copy = {team: [] for team in copy.deepcopy(TEAMS)}
-    return teams_copy
+    
+    experienced_players = [player for player in players_copy if player['experience']]
+    inexperienced_players = [player for player in players_copy if not player['experience']]
+
+    teams_assigned = {team: experienced_players[i::len(teams_copy)] + 
+                      inexperienced_players[i::len(teams_copy)] for i, team in enumerate(teams_copy)}
+    return teams_assigned
 
 
 def app_start():
@@ -28,5 +34,5 @@ def app_start():
 
 if __name__ == "__main__":
     players_list = clean_data()
-    balance_teams()
-    # app_start()
+    team_list = balance_teams(players_list)
+    app_start()
