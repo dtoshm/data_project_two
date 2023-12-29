@@ -43,9 +43,9 @@ def display_teams(teams, user_selected_team):
     guardians = []
     for player in teams[user_selected_team]:
         first_name = player['name']
-        players.append(first_name)
+        height = player['height']
+        players.append((first_name, height))
         guardians.append(player['guardians'])
-
     print("\nTeam: {} Stats".format(user_selected_team))
     print("-" * 20)
     print("Total Players: {}".format(len(teams[user_selected_team])))
@@ -54,11 +54,13 @@ def display_teams(teams, user_selected_team):
     height_list = [player['height'] for player in teams[user_selected_team]]
     print("Average Height: {} {}".format(round(sum(height_list) / len(height_list), 2), "inches"))
     print("\nPlayers on Team:")
-    print(", ".join(players))
+    sorted_players = sorted(players, key=lambda x: x[1], reverse=True)
+    names_only = [player[0] for player in sorted_players]
+    print(', '.join(names_only))
     print("\nGuardians")
     print(', '.join(', '.join(names) for names in guardians))
     print("\nPress ENTER to continue...\n")
-        
+
 
 def app_start():
     """
