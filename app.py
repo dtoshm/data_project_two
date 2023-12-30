@@ -39,31 +39,40 @@ def team_calculations(teams, selected_team):
     """
     Calculate and return various statistics for a selected team.
     """
-    players = []
+    player_names = []
+    player_heights = []
+    guardians_list = []
+    total_players = len(teams[selected_team])  
+    experienced_players = len([player for player in teams[selected_team] if player['experience']])
+    inexperienced_players = len([player for player in teams[selected_team] if not player['experience']])
+    # Populate Variables
     for player in teams[selected_team]:
         first_name = player['name']
         height = player['height']
         guardians = player['guardians']
-        players.append((first_name, height, guardians))
-    experienced_players = len([player for player in teams[selected_team] if player['experience']])
-    inexperienced_players = len([player for player in teams[selected_team] if not player['experience']])
-    total_players = len(teams[selected_team])
-    player_heights = [player[1] for player in players]    
+        player_names.append(first_name)
+        player_heights.append(height)
+        guardians_list.append(guardians)
+    # Dependant Variables
+    flat_guardians_list = [name for sublist in guardians_list for name in sublist]
     average_height = round(sum(player_heights) / len(player_heights), 2)
-    sorted_players = sorted(players, key=lambda x: x[1], reverse=True)
-    player_names = [player[0] for player in sorted_players]
-    guardians = [item[2] for item in players]
-    teams[selected_team].append({'experience_players': experienced_players})
-    teams[selected_team].append({'inexperienced_players': inexperienced_players})
-    teams[selected_team].append({'average_height': average_height})
-    return total_players, experienced_players, inexperienced_players, average_height, player_names, guardians
+    # Return  
+    team_stats = {
+        'total_players': total_players,
+        'experienced_players': experienced_players,
+        'inexperienced_players': inexperienced_players,
+        'average_height': average_height,
+        'player_names': player_names,
+        'guardians': flat_guardians_list
+    }
+    return team_stats
 
 
 def display_teams(teams, selected_team):
     """
     Display the team stats.
     """
-    total_players, experienced_players, inexperienced_players, average_height, player_names, guardians = team_calculations(teams, selected_team)
+    team_stats = team_calculations(teams, selected_team)
     print("\nTeam: {} Stats".format(selected_team))
     print("-" * 20)
     print("Total Players: {}".format(total_players))
@@ -85,26 +94,36 @@ def app_start(teams):
     print("BASKETBALL TEAM STATS TOOL\n")
     print("-" * 4 + "MENU" + "-" * 4)
     user_input = ""
-    while user_input.upper() != "B":
-        print("\nHere are your choices:\n A) Display Team Stats\n B) Quit\n")
-        user_input = input("Enter an option: ")
+    while True:
+        print("\nHere are the choices:\n A) Display Team Stats\n B) Quit\n")
+        user_input = input("Enter a Choice: ")
         if user_input.upper() == "A":
             user_selected_team = ""
             print("\nA) Panthers\nB) Bandits\nC) Warriors\n")
+            
+            
             while True:
-                user_selected_team = input("Enter an option: ")
+
+                user_selected_team = input("Enter an Team or use Enter to return: ")
                 if user_selected_team.upper() == "A":
                     display_teams(teams, "Panthers")
+                        
                 elif user_selected_team.upper() == "B":
                     display_teams(teams, "Bandits")
+                    
                 elif user_selected_team.upper() == "C":
                     display_teams(teams, "Warriors")
+                    
                 elif user_selected_team == "":
                     break
+                
                 else:
                     print("\nPlease Enter a Menu Option\n")
+                    
+                    
         elif user_input.upper() == "B":
             print("Goodbye!")
+            break
         else:
             print("\nPlease Enter a Menu Option")
 
@@ -112,4 +131,7 @@ def app_start(teams):
 if __name__ == "__main__":
     players_list = clean_data()
     team_list = balance_teams(players_list)
-    app_start(team_list)
+    # app_start(team_list)
+    # display_teams(team_list, "Panthers")
+    # display_teams(team_list, "Panthers")
+    print(team_calculations(team_list, "Panthers"))
