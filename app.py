@@ -129,7 +129,7 @@ def app_start(teams):
 
 def save_data(team_list):
     """
-    Save Data to Teams Data Structure
+    Save Data to each Teams Data Structure
     """
     for team_name in ['Panthers', 'Bandits', 'Warriors']:
         team_stats = team_calculations(team_list, team_name)
