@@ -1,7 +1,7 @@
 """
 Data Analysis Techdegree
 Project 2 - A Basketball Stats Tool
---------------------------------
+-----------------------------------
 """
 from constants import PLAYERS, TEAMS
 import copy
@@ -20,15 +20,15 @@ def clean_data():
     return players_cleaned
 
 
-def balance_teams(players_copy):
+def balance_teams(players):
     """
     Determine the number of players for each team,
     deep copy the teams constant, sort players by experience, 
     assign players to teams, return the sorted teams
     """
     teams_copy = {team: [] for team in copy.deepcopy(TEAMS)}
-    experienced_players = [player for player in players_copy if player['experience']]
-    inexperienced_players = [player for player in players_copy if not player['experience']]
+    experienced_players = [player for player in players if player['experience']]
+    inexperienced_players = [player for player in players if not player['experience']]
     teams_assigned = {team: experienced_players[i::len(teams_copy)] + 
                       inexperienced_players[i::len(teams_copy)] for i, 
                       team in enumerate(teams_copy)}
@@ -59,12 +59,12 @@ def team_calculations(teams, selected_team):
     return total_players, experienced_players, inexperienced_players, average_height, player_names, guardians
 
 
-def display_teams(teams, user_selected_team):
+def display_teams(teams, selected_team):
     """
     Display the team stats.
     """
-    total_players, experienced_players, inexperienced_players, average_height, player_names, guardians = team_calculations(teams, user_selected_team)
-    print("\nTeam: {} Stats".format(user_selected_team))
+    total_players, experienced_players, inexperienced_players, average_height, player_names, guardians = team_calculations(teams, selected_team)
+    print("\nTeam: {} Stats".format(selected_team))
     print("-" * 20)
     print("Total Players: {}".format(total_players))
     print("Experienced Players: {}".format(experienced_players))
@@ -79,8 +79,8 @@ def display_teams(teams, user_selected_team):
 
 def app_start(teams):
     """
-    Mainmenu runs until user selects B.
-    Submenu for displaying user selected team assignments until user selects enter.
+    Main menu runs until user selects B.
+    Submenu displays user selected team until user selects enter.
     """
     print("BASKETBALL TEAM STATS TOOL\n")
     print("-" * 4 + "MENU" + "-" * 4)
