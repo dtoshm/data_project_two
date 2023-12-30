@@ -39,23 +39,31 @@ def team_calculations(teams, selected_team):
     """
     Calculate and return various statistics for a selected team.
     """
-    player_names = []
+    guardians_names = []
     player_heights = []
-    guardians_list = []
+    player_heights_list = {}
     total_players = len(teams[selected_team])  
     experienced_players = len([player for player in teams[selected_team] if player['experience']])
     inexperienced_players = len([player for player in teams[selected_team] if not player['experience']])
+    
     # Populate Variables
     for player in teams[selected_team]:
         first_name = player['name']
-        height = player['height']
         guardians = player['guardians']
-        player_names.append(first_name)
-        player_heights.append(height)
-        guardians_list.append(guardians)
-    # Dependant Variables
-    flat_guardians_list = [name for sublist in guardians_list for name in sublist]
-    average_height = round(sum(player_heights) / len(player_heights), 2)
+        for guardian in guardians:
+            if guardian not in guardians_names:
+                guardians_names.append(guardian) 
+        height = player['height']
+        player_heights.append(height)       
+        if first_name not in player_heights_list:
+            player_heights_list[first_name] = height
+
+    # Sort players names by height
+    sorted_names_list = dict(sorted(player_heights_list.items()))
+    player_names = list(sorted_names_list.keys())
+
+    average_height = round(sum(player_heights) / len(player_heights), 2) 
+         
     # Return  
     team_stats = {
         'total_players': total_players,
@@ -63,7 +71,7 @@ def team_calculations(teams, selected_team):
         'inexperienced_players': inexperienced_players,
         'average_height': average_height,
         'player_names': player_names,
-        'guardians': flat_guardians_list
+        'guardians': guardians_names
     }
     return team_stats
 
@@ -83,7 +91,7 @@ def display_teams(teams, selected_team):
     print(', '.join(team_stats['player_names']))
     print("\nGuardians")
     print(', '.join(team_stats['guardians']))
-    print("\nPress ENTER to continue...\n")
+    print("\nA) Panthers\nB) Bandits\nC) Warriors\n")
 
 
 def app_start(teams):
@@ -101,19 +109,15 @@ def app_start(teams):
             user_selected_team = ""
             print("\nA) Panthers\nB) Bandits\nC) Warriors\n")
             while True:
-                user_selected_team = input("Enter an Team or use Enter to return: ")
+                user_selected_team = input("Enter a Team or use Enter to return: ")
                 if user_selected_team.upper() == "A":
                     display_teams(teams, "Panthers")
-                        
                 elif user_selected_team.upper() == "B":
                     display_teams(teams, "Bandits")
-                    
                 elif user_selected_team.upper() == "C":
                     display_teams(teams, "Warriors")
-                    
                 elif user_selected_team == "":
                     break
-                
                 else:
                     print("\nPlease Enter a Menu Option\n")  
         elif user_input.upper() == "B":
