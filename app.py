@@ -75,14 +75,14 @@ def display_teams(teams, selected_team):
     team_stats = team_calculations(teams, selected_team)
     print("\nTeam: {} Stats".format(selected_team))
     print("-" * 20)
-    print("Total Players: {}".format(total_players))
-    print("Experienced Players: {}".format(experienced_players))
-    print("Inexperienced Players: {}".format(inexperienced_players))
-    print("Average Height: {} {}".format(average_height, "inches"))
+    print("Total Players: {}".format(team_stats['total_players']))
+    print("Experienced Players: {}".format(team_stats['experienced_players']))
+    print("Inexperienced Players: {}".format(team_stats['inexperienced_players']))
+    print("Average Height: {} {}".format(team_stats['average_height'], "inches"))
     print("\nPlayers on Team:")
-    print(', '.join(player_names))
+    print(', '.join(team_stats['player_names']))
     print("\nGuardians")
-    print(', '.join(str(player) for players in guardians for player in players))
+    print(', '.join(team_stats['guardians']))
     print("\nPress ENTER to continue...\n")
 
 
@@ -100,10 +100,7 @@ def app_start(teams):
         if user_input.upper() == "A":
             user_selected_team = ""
             print("\nA) Panthers\nB) Bandits\nC) Warriors\n")
-            
-            
             while True:
-
                 user_selected_team = input("Enter an Team or use Enter to return: ")
                 if user_selected_team.upper() == "A":
                     display_teams(teams, "Panthers")
@@ -118,9 +115,7 @@ def app_start(teams):
                     break
                 
                 else:
-                    print("\nPlease Enter a Menu Option\n")
-                    
-                    
+                    print("\nPlease Enter a Menu Option\n")  
         elif user_input.upper() == "B":
             print("Goodbye!")
             break
@@ -128,10 +123,22 @@ def app_start(teams):
             print("\nPlease Enter a Menu Option")
 
 
+def save_data(team_list):
+    """
+    Save Data to Teams Data Structure
+    """
+    for team_name in ['Panthers', 'Bandits', 'Warriors']:
+        team_stats = team_calculations(team_list, team_name)
+        stats = {
+            'experienced_players': team_stats['experienced_players'],
+            'inexperienced_players': team_stats['inexperienced_players'],
+            'average_height': team_stats['average_height'],
+        }
+        team_list[team_name].append(stats)
+        
+
 if __name__ == "__main__":
     players_list = clean_data()
     team_list = balance_teams(players_list)
-    # app_start(team_list)
-    # display_teams(team_list, "Panthers")
-    # display_teams(team_list, "Panthers")
-    print(team_calculations(team_list, "Panthers"))
+    app_start(team_list)
+    save_data(team_list)
