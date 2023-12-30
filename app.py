@@ -103,6 +103,8 @@ def app_start(teams):
                     break
                 else:
                     print("\nPlease Enter a Menu Option\n")
+        elif user_input.upper() == "B":
+            print("Goodbye!")
         else:
             print("\nPlease Enter a Menu Option")
 
